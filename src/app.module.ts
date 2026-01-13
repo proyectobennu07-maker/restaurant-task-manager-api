@@ -8,9 +8,11 @@ import { TasksModule } from './tasks/tasks.module';
 import { AssignmentsModule } from './assignments/assignments.module';
 import { CommonModule } from './common/common.module';
 import { ConfigModule } from './config/config.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule,
     AuthModule,
     UsersModule,
     RolesModule,
@@ -18,6 +20,7 @@ import { ConfigModule } from './config/config.module';
     AssignmentsModule,
     CommonModule,
     ConfigModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
