@@ -10,7 +10,7 @@ import { UsersModule } from '../users/users.module';
 
 const jwtSecret = process.env.JWT_SECRET;
 const jwtExpiresIn: StringValue = (process.env.JWT_EXPIRES_IN ??
-  '1h') as StringValue;
+  '5s') as StringValue;
 
 if (!jwtSecret) {
   throw new Error('JWT_SECRET is not defined');
