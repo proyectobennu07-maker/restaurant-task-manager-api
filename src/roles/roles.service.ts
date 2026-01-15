@@ -32,7 +32,6 @@ export class RolesService {
   }
 
   async remove(id: string): Promise<Role> {
-    // Verificamos que exista antes de borrar
     await this.findOne(id);
 
     return this.prisma.role.delete({

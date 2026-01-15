@@ -57,10 +57,6 @@ export class UsersService {
     });
   }
 
-  /**
-   * 🔐 Método usado por AuthService
-   * Tipado explícito para evitar `any` y errores ESLint
-   */
   async findByEmail(
     email: string,
   ): Promise<(User & { role: { name: string } }) | null> {

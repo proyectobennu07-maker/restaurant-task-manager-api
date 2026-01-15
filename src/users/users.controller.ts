@@ -23,14 +23,12 @@ import type { Request } from 'express';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // 🔐 SOLO ADMIN
   @Post()
   @Roles('ADMIN')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  // 🔐 ADMIN y MANAGER → todos | USER → solo él
   @Get()
   async findAll(@Req() req: Request) {
     const user = req.user as { userId: string; role: string };
@@ -68,7 +66,6 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
-  // 🔐 SOLO ADMIN
   @Delete(':id')
   @Roles('ADMIN')
   remove(@Param('id') id: string) {

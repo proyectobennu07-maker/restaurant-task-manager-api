@@ -8,9 +8,6 @@ import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import type { Request } from 'express';
 
-/**
- * Tipo explícito del usuario inyectado por JwtStrategy
- */
 interface AuthenticatedUser {
   userId: string;
   role: string;
@@ -26,12 +23,10 @@ export class RolesGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
-    // Si no hay roles requeridos, permitir acceso
     if (!requiredRoles || requiredRoles.length === 0) {
       return true;
     }
 
-    // Tipado explícito del request
     const request = context
       .switchToHttp()
       .getRequest<Request & { user?: AuthenticatedUser }>();
