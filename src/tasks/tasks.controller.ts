@@ -6,6 +6,7 @@ import {
   UseGuards,
   Patch,
   Param,
+  Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -13,6 +14,7 @@ import { UpdateTaskPriorityDto } from './dto/update-task-priority.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { FilterTaskByAreaDto } from './dto/filter-task-area.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('tasks')
@@ -29,6 +31,12 @@ export class TasksController {
   @Roles('SUPERVISOR', 'ADMIN')
   findAll() {
     return this.tasksService.findAll();
+  }
+
+  @Get('by-area')
+  @Roles('SUPERVISOR', 'ADMIN')
+  findByArea(@Query() query: FilterTaskByAreaDto) {
+    return this.tasksService.findByArea(query.area);
   }
 
   @Patch(':id/priority')

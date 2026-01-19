@@ -1,4 +1,12 @@
-import { IsString, IsOptional, IsEnum, IsInt, Min } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsInt,
+  Min,
+  IsIn,
+} from 'class-validator';
+import { TaskArea } from '@prisma/client';
 import { TaskPriority } from '../enums/task-priority.enum';
 
 export class CreateTaskDto {
@@ -17,4 +25,9 @@ export class CreateTaskDto {
   @IsInt()
   @Min(1)
   estimatedTime?: number;
+
+  @IsIn(Object.values(TaskArea), {
+    message: 'Área inválida',
+  })
+  area: TaskArea;
 }
