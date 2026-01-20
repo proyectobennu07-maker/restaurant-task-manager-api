@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { Prisma, Task, TaskArea } from '@prisma/client';
+
 @Injectable()
 export class TasksService {
   constructor(private readonly prisma: PrismaService) {}
@@ -42,6 +47,65 @@ export class TasksService {
     return this.prisma.task.update({
       where: { id },
       data: { priority },
+    });
+  }
+
+  async assignTask(taskId: string, userId: string) {
+    const task = await this.prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+
+    return this.prisma.task.update({
+      where: { id: taskId },
+      data: {
+        assignedToId: userId,
+      },
+    });
+  }
+
+  findMyTasks(userId: string) {
+    return this.prisma.task.findMany({
+      where: {
+        assignedToId: userId,
+      },
+      orderBy: {
+        priority: 'desc',
+      },
+      select: {
+        id: true,
+        title: true,
+        priority: true,
+        area: true,
+        estimatedTime: true,
+        status: true,
+      },
+    });
+  }
+
+  async updateStatus(
+    taskId: string,
+    userId: string,
+    status: Task['status'],
+  ): Promise<Task> {
+    const task = await this.prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+
+    if (task.assignedToId !== userId) {
+      throw new ForbiddenException('You cannot modify this task');
+    }
+
+    return this.prisma.task.update({
+      where: { id: taskId },
+      data: { status },
     });
   }
 }

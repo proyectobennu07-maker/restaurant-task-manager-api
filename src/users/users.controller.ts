@@ -71,4 +71,9 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
+
+  @Post('bootstrap')
+  createInitialAdmin(@Body() dto: CreateUserDto) {
+    return this.usersService.create(dto);
+  }
 }
