@@ -29,6 +29,7 @@
 
 ```bash
 $ npm install
+$ npm install -g @nestjs/cli
 ```
 
 ## Compile and run the project
