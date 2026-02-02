@@ -364,8 +364,6 @@ describe('TasksService', () => {
       ).rejects.toThrow();
     });
 
-
-
     it('should throw ForbiddenException if user not assigned to task', async () => {
       prisma.task.findUnique.mockResolvedValue({
         ...mockTask,
